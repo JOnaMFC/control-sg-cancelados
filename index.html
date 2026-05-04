@@ -4,39 +4,176 @@
   <meta charset="UTF-8">
   <title>Control SG Cancelados</title>
 
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  https://cdn.jsdelivr.net/npm/chart.jsscript>
 
   <style>
     body {
       font-family: Arial, sans-serif;
-      background-color: #f5f5f5;
-      padding: 40px;
+      background-color: #f4f6f8;
+      padding: 30px;
+    }
+    h1 {
+      color: #0071ce;
     }
     .box {
       background: white;
       padding: 20px;
-      max-width: 800px;
       border-radius: 8px;
+      max-width: 1100px;
+      margin-bottom: 30px;
     }
-    h1 {
-      color: #0071ce;
+    input, select, textarea, button {
+      width: 100%;
+      margin-top: 8px;
+      padding: 8px;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+    }
+    table, th, td {
+      border: 1px solid #ccc;
+    }
+    th {
+      background-color: #eee;
+    }
+    th, td {
+      padding: 8px;
+      text-align: left;
+    }
+    .pendiente {
+      color: orange;
+      font-weight: bold;
+    }
+    .cerrado {
+      color: green;
+      font-weight: bold;
     }
   </style>
 </head>
 
 <body>
-  <div class="box">
-    <h1>Control SG Cancelados – MFC</h1>
-    <p>Seguimiento operativo de SG cancelados.</p>
 
-    <canvas id="sgChart"></canvas>
+  <div class="box">
+    <h1>Ingreso SG Cancelado</h1>
+
+    <label>SG</label>
+    <input id="sgInput" placeholder="Ej: SG123456">
+
+    <label>Tipo Cancelación</label>
+    <select id="tipoInput">
+      <option>Total</option>
+      <option>Parcial</option>
+    </select>
+
+    <label>Comentario Operación</label>
+    <textarea id="comentarioInput"></textarea>
+
+    <button onclick="agregarSG()">Registrar SG</button>
   </div>
 
-  <script>
-    const ctx = document.getElementById('sgChart');
+  <div class="box">
+    <h1>Control Operativo</h1>
 
-    new Chart(ctx, {
+    <table id="tablaSG">
+      <thead>
+        <tr>
+          <th>Fecha</th>
+          <th>SG</th>
+          <th>Tipo</th>
+          <th>Comentario</th>
+          <th>Estado</th>
+          <th>Acción</th>
+          <th>Actualizar</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+  </div>
+
+  <div class="box">
+    <h1>Resumen Ejecutivo</h1>
+    <canvas id="grafico"></canvas>
+  </div>
+
+<script>
+  let registros = [];
+
+  function agregarSG() {
+    const sg = sgInput.value;
+    if (!sg) return;
+
+    registros.push({
+      fecha: new Date().toLocaleDateString(),
+      sg,
+      tipo: tipoInput.value,
+      comentario: comentarioInput.value,
+      estado: 'Pendiente',
+      accion: ''
+    });
+
+    sgInput.value = '';
+    comentarioInput.value = '';
+
+    render();
+  }
+
+  function actualizarEstado(index) {
+    const accion = document.getElementById('accion'+index).value;
+    registros[index].accion = accion;
+    registros[index].estado = 'Gestionado';
+    render();
+  }
+
+  function render() {
+    const tbody = document.querySelector('#tablaSG tbody');
+    tbody.innerHTML = '';
+
+    let pendientes = 0;
+    let gestionados = 0;
+
+    registros.forEach((r, i) => {
+      if (r.estado === 'Pendiente') pendientes++;
+      else gestionados++;
+
+      tbody.innerHTML += `
+        <tr>
+          <td>${r.fecha}</td>
+          <td>${r.sg}</td>
+          <td>${r.tipo}</td>
+          <td>${r.comentario}</td>
+          <td class="${r.estado === 'Pendiente' ? 'pendiente' : 'cerrado'}">${r.estado}</td>
+          <td>
+            <input id="accion${i}" placeholder="Acción tomada" value="${r.accion}">
+          </td>
+          <td>
+            ${r.estado === 'Pendiente' ? `<button onclick="actualizarEstado(${i})">Cerrar</button>` : '—'}
+          </td>
+        </tr>`;
+    });
+
+    dibujarGrafico(pendientes, gestionados);
+  }
+
+  let chart;
+  function dibujarGrafico(p, g) {
+    const ctx = document.getElementById('grafico');
+    if (chart) chart.destroy();
+
+    chart = new Chart(ctx, {
       type: 'bar',
       data: {
-        labels: [
-          'Quiebre Stock',
+        labels: ['Pendientes', 'Gestionados'],
+        datasets: [{
+          label: 'SG',
+          data: [p, g],
+          backgroundColor: ['#ffb300', '#4caf50']
+        }]
+      }
+    });
+  }
+</script>
+
+</body>
+</html>
