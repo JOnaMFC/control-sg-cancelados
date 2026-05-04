@@ -5,15 +5,12 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Control de SGs Cancelados</title>
 
-  <!-- Tailwind CSS -->
-  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- ✅ Tailwind CSS BIEN CARGADO -->
+  <script/cdn.tailwindcss.com
 
-  <!-- Font Awesome -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
-
-  <script>
-    tailwind.config = {
-      theme: {
+  <!-- ✅ Font Awesome BIEN CARGADO -->
+  <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/    theme: {
         extend: {
           colors: {
             walmart: {
@@ -32,14 +29,9 @@
 
 <!-- HEADER -->
 <nav class="bg-walmart-blue text-white shadow-md">
-  <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
-    <div class="flex items-center gap-3">
-      <i class="fas fa-ban text-walmart-spark text-2xl"></i>
-      <div>
-        <h1 class="font-bold text-xl">Control de SGs por Cancelar</h1>
-        <p class="text-sm opacity-90">Versión Autónoma y Analítica</p>
-      </div>
-    </div>
+  <div class="max-w-7xl mx-auto px-6 py-4 flex items-center gap-3">
+    <i class="fas fa-ban text-walmart-spark text-xl"></i>
+    <h1 class="font-bold text-xl">Control de SGs por Cancelar</h1>
   </div>
 </nav>
 
@@ -47,60 +39,3 @@
 
 <!-- KPIs -->
 <section class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
-  <div class="bg-white rounded-lg shadow p-6 text-center">
-    <p class="text-sm text-gray-500 font-semibold">Total Solicitudes</p>
-    <p class="text-4xl font-bold text-walmart-blue" id="kpiTotal">0</p>
-  </div>
-  <div class="bg-yellow-50 rounded-lg shadow p-6 text-center">
-    <p class="text-sm text-gray-500 font-semibold">Pendientes</p>
-    <p class="text-4xl font-bold text-yellow-600" id="kpiPendientes">0</p>
-  </div>
-  <div class="bg-red-50 rounded-lg shadow p-6 text-center">
-    <p class="text-sm text-gray-500 font-semibold">Alerta (+3 días)</p>
-    <p class="text-4xl font-bold text-red-600" id="kpiAlertas">0</p>
-  </div>
-  <div class="bg-green-50 rounded-lg shadow p-6 text-center">
-    <p class="text-sm text-gray-500 font-semibold">Completados</p>
-    <p class="text-4xl font-bold text-green-600" id="kpiCompletados">0</p>
-  </div>
-</section>
-
-<!-- FORMULARIO -->
-<section class="bg-white rounded-lg shadow p-6 mb-8">
-  <h2 class="text-lg font-bold mb-4">
-    <i class="fas fa-plus-circle text-walmart-blue mr-2"></i>Nueva Solicitud
-  </h2>
-  <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-    <input id="inputSG" type="text" placeholder="Número de SG (Ej: SG-12345)"
-           class="border rounded px-3 py-2 w-full">
-    <input id="inputSolicitante" type="text" placeholder="Solicitado por"
-           class="border rounded px-3 py-2 w-full">
-    <button onclick="registrarSG()"
-            class="bg-walmart-blue text-white font-bold rounded px-3 py-2 hover:bg-blue-700">
-      Registrar SG
-    </button>
-  </div>
-</section>
-
-<!-- TABLA -->
-<section class="bg-white rounded-lg shadow overflow-hidden">
-  <table class="min-w-full">
-    <thead class="bg-gray-100">
-      <tr>
-        <th class="px-4 py-3 text-left text-sm font-bold text-gray-600">Número SG</th>
-        <th class="px-4 py-3 text-left text-sm font-bold text-gray-600">Solicitante</th>
-        <th class="px-4 py-3 text-left text-sm font-bold text-gray-600">Fecha Ingreso</th>
-        <th class="px-4 py-3 text-left text-sm font-bold text-gray-600">Estado</th>
-        <th class="px-4 py-3 text-left text-sm font-bold text-gray-600">Gestión</th>
-      </tr>
-    </thead>
-    <tbody id="tablaSG">
-      <tr>
-        <td colspan="5" class="px-4 py-6 text-center text-gray-500">
-          No hay SGs registrados todavía ✅
-        </td>
-      </tr>
-    </tbody>
-  </table>
-</section>
-
